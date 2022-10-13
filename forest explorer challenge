@@ -1,0 +1,111 @@
+#include <kipr/wombat.h>
+
+//VARIABLES
+int power = 50;
+int left_motor = 3;
+int right_motor = 0;
+int motion = 3500/3;
+int b_motion = 1000;
+int counter = 0;
+
+//DECLARE FUNCTIONS
+void forward();
+void left_turn();
+void backwards();
+void b_left();
+void right_turn();
+void b_right();
+
+int main()
+{
+    
+shut_down_in(305); //Shut down around 5 min
+   while (1)
+   {
+      forward(); //Move forward when on
+      
+          
+       if (digital(1)==1)
+       {
+           b_left(); //Once button is pressed go back then left
+           counter=counter+1 ; //Once button is pressed add 1 on counter
+       }
+                if (digital(0)==1)
+       {
+           b_left(); //Once button is pressed go back then left
+                    counter=counter+1 ; //Once button is pressed add 1 on counter
+       }
+       		if (counter==7) //Once counter hits do evasive move
+       {
+        
+           b_right();
+                counter=0 ; //Once evasive move is over set counter back to zero
+                
+       }
+   }
+    
+    ao();
+  
+
+return 0;
+       }
+
+//DEFINE FUNCTIONS 
+void forward ()
+{
+printf("Going Forward!\n");
+motor(right_motor,power); //forward
+motor(left_motor,power);
+msleep(200);   
+}
+void left_turn ()
+{
+printf("Going Left!\n");
+motor(right_motor,power); //left turn right motor
+motor(left_motor,-power); //left motor
+msleep(motion);
+ao();   
+}
+void backwards ()
+{
+printf("Going Backwards!\n");
+motor(right_motor,-power); //backwards
+motor(left_motor,-power);
+msleep(b_motion);   
+}
+void b_left ()
+{
+printf("Going Backwards!\n");
+motor(right_motor,-power); //backwards
+motor(left_motor,-power);
+msleep(b_motion);   
+
+printf("Going Left!\n");
+motor(right_motor,power); //left turn right motor
+motor(left_motor,-power); //left motor
+msleep(motion);
+ao();   
+}
+
+void right_turn()
+{
+printf("Going Right!\n");
+motor(right_motor,power); //right turn right motor
+motor(left_motor,-power); //left motor
+msleep(motion);
+ao();   
+}
+
+void b_right()
+{
+printf("Going Backwards!\n");
+motor(right_motor,-power); //backwards
+motor(left_motor,-power);
+msleep(b_motion);   
+
+printf("Going Right!\n");
+motor(right_motor,-power); //right turn right motor
+motor(left_motor,power); //left motor
+msleep(motion);
+ao();   
+}
